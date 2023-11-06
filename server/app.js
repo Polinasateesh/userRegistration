@@ -10,10 +10,6 @@ const port = 5000;
 app.use(express.json());
 app.use(cors());
 
-
-
-
-
 // Create a connection to  database   
 const DB = mysql.createConnection({
     host: 'localhost',
@@ -70,41 +66,41 @@ app.post('/register', (request, response) => {
 
 app.post('/login', (request, response) => {
     try {
-      const { userName, password } = request.body;
-      const getQuery = `SELECT * FROM client WHERE userName = ? AND password = ?`;
-      DB.query(getQuery, [userName, password], (error, results) => {
-        if (error) {
-          response.status(500).json({ message: 'Login Failed' });
-        } else {
-          if (results.length > 0) {
-           
-            const jwtToken = jwt.sign({ userName }, 'sateesh', { expiresIn: '1h' });
-            response.json({ message: 'Login Successful', jwtToken });
-          } else {
-            response.status(401).json({ message: 'Invalid username or password' });
-          }
-        }
-      });
+        const { userName, password } = request.body;
+        const getQuery = `SELECT * FROM client WHERE userName = ? AND password = ?`;
+        DB.query(getQuery, [userName, password], (error, results) => {
+            if (error) {
+                response.status(500).json({ message: 'Login Failed' });
+            } else {
+                if (results.length > 0) {
+
+                    const jwtToken = jwt.sign({ userName }, 'sateesh', { expiresIn: '1h' });
+                    response.json({ message: 'Login Successful', jwtToken });
+                } else {
+                    response.status(401).json({ message: 'Invalid username or password' });
+                }
+            }
+        });
     } catch (error) {
-      response.status(500).json({ message: 'Internal Server Error' });
+        response.status(500).json({ message: 'Internal Server Error' });
     }
-  });
+});
 
 
-  app.post('/details',(request,response)=>{
-   
-    try{
-        const {userName}=request.body
-        getQuery=`SELECT * FROM client WHERE userName=?`
-        DB.query(getQuery,[userName],(error,result)=>{
-            if(error){
-                response.status(500).json({message:'Failed to Get Details'})
-            }else{
-                response.send(result)
+app.post('/details', (request, response) => {
+
+    try {
+        const { userName } = request.body
+        getQuery = `SELECT * FROM client WHERE userName=?`
+        DB.query(getQuery, [userName], (error, result) => {
+            if (error) {
+                response.status(500).json({ message: 'Failed to Get Details' })
+            } else {
+                response.json(result)
             }
 
         })
-    }catch(error){
-        response.status(500).json({message:'Internal Server Error'})
+    } catch (error) {
+        response.status(500).json({ message: 'Internal Server Error' })
     }
-  })
+})

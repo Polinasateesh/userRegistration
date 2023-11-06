@@ -37,11 +37,11 @@ const Home = () => {
     }
     return (
         <Card className="card-container ">
-            <p>Home</p>
+            <p> ➡️ Home</p>
             {
                 data?.map((eachObj) => {
                     return (
-                        <div className="card">
+                        <div className="card" key={eachObj.id}>
                             <Button
                                 variant="contained"
                                 color="primary"

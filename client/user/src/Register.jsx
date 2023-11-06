@@ -12,6 +12,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock'
 import SendIcon from '@mui/icons-material/Send'
 import CloseIcon from '@mui/icons-material/Close'
+import logo from './assets/pngwing.com.png'
 
 
 const defaultValues = {
@@ -68,33 +69,36 @@ const Register = () => {
             }
             let response = await axios.post('http://localhost:5000/register', newValues);
             if (response.data && response.data.message) {
-                window.localStorage.setItem('userName',value.userName)
-                // Showing success toast 
-                toast.success(response.data.message, {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 600,
-                    onClose: () => {
-                        setTimeout(() => {
+                
+                    window.localStorage.setItem('userName',value.userName)
+                    // Showing success toast 
+                    toast.success(response.data.message, {
+                        position: toast.POSITION.TOP_RIGHT,
+                        autoClose: 600,
+                        onClose: () => {
+                            setTimeout(() => {
+                                setIsLoading(false);
+                                setValue(defaultValues);
+                                
+                                navigate('/Login');
+                            }, 1500);
+                        }
+                    });
+                }else {
+                    // Showing error toast
+                    toast.error(response.error, {
+                        position: toast.POSITION.TOP_RIGHT,
+                        autoClose: 600,
+                        onClose: () => {
                             setIsLoading(false);
-                            setValue(defaultValues);
-                            
-                            navigate('/Login');
-                        }, 1500);
-                    }
-                });
-            } else {
-                // Showing error toast
-                toast.error(response.error, {
-                    position: toast.POSITION.TOP_RIGHT,
-                    autoClose: 600,
-                    onClose: () => {
-                        setIsLoading(false);
-                    }
-                });
-            }
+                        }
+                    });
+                }
+              
         } catch (error) {
             // Showing error toast
-            toast.error('An error occurred', {
+    
+            toast.error('userName already exits', {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 500,
                 onClose: () => {
@@ -108,11 +112,11 @@ const Register = () => {
         <>
             <ToastContainer />
             <Card className='card-container'>
-               
-                <p className='card-heading'>Register Form</p>
+                
+                <p className='card-heading'> ➡️ Register Form</p>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sm={12}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name='firstName'
                                 label='First Name'
@@ -125,7 +129,7 @@ const Register = () => {
                                 variant='outlined'
                             />
                         </Grid>
-                        <Grid item xs={12} sm={12}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name='lastName'
                                 label='Last Name'
@@ -138,7 +142,7 @@ const Register = () => {
                                 variant='outlined'
                             />
                         </Grid>
-                        <Grid item xs={12} sm={12}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name='userName'
                                 label='User Name'
@@ -166,7 +170,7 @@ const Register = () => {
 
                         </Grid>
 
-                        <Grid item xs={12} sm={12}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 name='password'
                                 label='Password'
@@ -237,6 +241,7 @@ const Register = () => {
                         </Button>
                     </div>
                 </form>
+                
             </Card>
         </>
     );

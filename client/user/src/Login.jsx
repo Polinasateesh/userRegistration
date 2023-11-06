@@ -93,7 +93,9 @@ const Login = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault()
         const response = await axios.post('http://localhost:5000/login', userInfo)
+        
         if (response.data && response.data.message && response.data.jwtToken) {
+          
 
             window.localStorage.setItem('jwtToken', response.data.jwtToken)
             window.location.reload();
@@ -150,11 +152,11 @@ const Login = () => {
                                         name="userName"
                                         required
                                         value={userInfo.userName}
-                                        // validators={['required', 'isEmail']}
-                                        // errormessages={[
-                                        //     'this field is required',
-                                        //     'email is not valid',
-                                        // ]}
+                                        validators={['required', 'isEmail']}
+                                        errormessages={[
+                                            'this field is required',
+                                            'email is not valid',
+                                        ]}
                                         InputProps={{
                                             startAdornment: (
                                                 <EmailIcon
